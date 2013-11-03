@@ -188,10 +188,10 @@ namespace BattlePetLeveler
 
         public static void LoserForfeit()
         {
-            // 65-70 sec timer to wait now that the battle has started
+            // 61-65 sec timer to wait now that the battle has started
             if (!LoserForfeitTimer.IsRunning)
             {
-                ThrottleTimer.CreateThrottleTimer(LoserForfeitTimer, 65000, 70000, _loserForfeitTimer);
+                ThrottleTimer.CreateThrottleTimer(LoserForfeitTimer, 61000, 65000, _loserForfeitTimer);
             }
             else
             {
@@ -201,10 +201,10 @@ namespace BattlePetLeveler
 
         public static void WinnerForfeit()
         {
-            // 120-130 sec timer to wait now that the battle has started
+            // 80-85 sec timer to wait now that the battle has started
             if (!WinnerForfeitTimer.IsRunning)
             {
-                ThrottleTimer.CreateThrottleTimer(WinnerForfeitTimer, 120000, 130000, _winnerForfeitTimer);
+                ThrottleTimer.CreateThrottleTimer(WinnerForfeitTimer, 80000, 85000, _winnerForfeitTimer);
             }
             else
             {
@@ -214,10 +214,10 @@ namespace BattlePetLeveler
 
         public static void Requeue()
         {
-            // 15-20 sec timer to wait now that the battle has ended
+            // 8-12 sec timer to wait now that the battle has ended
             if (!RequeueTimer.IsRunning)
             {
-                ThrottleTimer.CreateThrottleTimer(RequeueTimer, 15000, 20000, _requeueTimer);
+                ThrottleTimer.CreateThrottleTimer(RequeueTimer, 8000, 12000, _requeueTimer);
             }
             else
             {
@@ -298,16 +298,6 @@ namespace BattlePetLeveler
                 // Change pet to the first pet
                 ChangePetCommand(1);
             }
-            else if (PetUsable(2))
-            {
-                // Change pet to the second pet
-                ChangePetCommand(2);
-            }
-            else if (PetUsable(3))
-            {
-                // Change pet to the third pet
-                ChangePetCommand(3);
-            }
         }
 
         public static bool IsInPetBattle()
@@ -320,6 +310,18 @@ namespace BattlePetLeveler
         {
             var usable = Lua.GetReturnVal<bool>(string.Format("return C_PetBattles.CanPetSwapIn({0})", pPetIndex), 0);
             return usable;
+        }
+
+        public static int GetPetLevel(int pPetOwner, int pPetIndex)
+        {
+            /*
+            petOwner - 1: Current player, 2: Opponent (number)
+            petIndex - Accepted values are 1-3, but the order is based off of the initial order. (number)
+            
+            Returns:
+            level - The level of the pet (number) */
+            var level = Lua.GetReturnVal<int>(string.Format("return C_PetBattles.GetLevel({0}, {1})", pPetOwner, pPetIndex), 0);
+            return level;
         }
 
         public static void ChangePetCommand(int pPetIndex)
@@ -637,13 +639,195 @@ namespace BattlePetLeveler
                     {
                         // Check the timer
                         WinnerForfeit();
+
+                        // If the looser forfits
+                        if (!IsInPetBattle())
+                        {
+                            WinnerForfeitTimer.Reset();
+                        }
                     }
                     // Otherwise the timer has expired
                     else
                     {
-                        // Forfeit the match
-                        BPLlog("Forfeiting.");
-                        ForfeitCommand();
+                        if (IsInPetBattle())
+                        {
+                            // Forfeit the match
+                            BPLlog("Forfeiting.");
+                            ForfeitCommand();
+                        }
+
+                        // Make sure we create a new timer
+                        ThrottleTimer.WaitTimerCreated = false;
+
+                        // Create the battle ended timer
+                        Requeue();
+
+                        // Move to the next step
+                        _treeLogicStep++;
+                    }
+
+                    break;
+
+                // Battle ended state
+                case 4:
+                    if (RequeueTimer.IsRunning)
+                    {
+                        Requeue();
+                    }
+                    else
+                    {
+                        _treeLogicStep = 0;
+                    }
+
+                    break;
+
+                // Unused atm
+                case 5:
+
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region WinTradePriorityTree
+        private static void WinTradePriorityTree()
+        {
+            switch (_treeLogicStep)
+            {
+                // Not queued state
+                case 0:
+                    // If we are not in queue, we are queuable, and our pulse timer is active
+                    if (!IsInQueue())
+                    {
+                        if (IsQueuable() && ThrottleTimer.CheckThrottleTimer(PulseTimer, 1000, "not_create_pulse"))
+                        {
+                            // We queue up
+                            BPLlog("Queuing.");
+                            Lua.DoString("C_PetBattles.StartPVPMatchmaking()");
+
+                            // Make sure we create a new timer
+                            ThrottleTimer.WaitTimerCreated = false;
+
+                            // Create the queue timer
+                            LeaveQueue();
+                        }
+                    }
+                    // Otherwise if we are in the queue, move on
+                    else
+                    {
+                        // Move on to the next step
+                        _treeLogicStep++;
+                    }
+
+                    break;
+
+                // Queued state
+                case 1:
+                    // If the queue did not pop
+                    if (!IsQueuePopped())
+                    {
+                        // If the queue timer is running
+                        if (LeaveQueueTimer.IsRunning)
+                        {
+                            // Check the queue timer
+                            LeaveQueue();
+                        }
+                        else
+                        {
+                            // Otherwise if the queue timer isn't running (it expired)
+                            // Leave the queue
+                            BPLlog("Left queue due to long queue time.");
+
+                            LeaveQueueCommand();
+
+                            // Start over and requeue
+                            _treeLogicStep = 0;
+                        }
+                    }
+                    // Otherwise if the queue did pop
+                    else
+                    {
+                        // Move to the next step
+                        _treeLogicStep++;
+                    }
+
+                    break;
+
+                // Proposal state
+                case 2:
+                    // Check for proposal
+                    if (IsQueuePopped())
+                    {
+                        // If we still need to accept the proposal
+                        if (ThrottleTimer.CheckThrottleTimer(PulseTimer, RandomNumber.generateRandomInt(1500, 3000),
+                            "not_create_pulse"))
+                        {
+                            // Then we accept the queue after a random amount of time (1.5 - 3 sec)
+                            Lua.DoString("C_PetBattles.AcceptQueuedPVPMatch()");
+                            BPLlog("Accepted queue.");
+                        }
+                    }
+
+                    if (IsInPetBattle())
+                    {
+                        // Reset the queue timer
+                        LeaveQueueTimer.Reset();
+
+                        if (ShowPetFrame())
+                        {
+                            // Check which pet is usable and change to one that can be active
+                            CheckAndChangePet();
+                        }
+
+                        if (WaitingOnOpponent())
+                        {
+                            BPLlog("Waiting on opponent to choose a pet.");
+                        }
+                        else
+                        {
+                            // Make sure we create a new timer
+                            ThrottleTimer.WaitTimerCreated = false;
+
+                            // Create battle started timer
+                            WinnerForfeit();
+
+                            // Move to the next step
+                            _treeLogicStep++;
+                        }
+                    }
+
+                    break;
+
+                // Battle started state
+                case 3:
+                    if (ShowPetFrame())
+                    {
+                        // Check which pet is usable and change to one that can be active
+                        CheckAndChangePet();
+                    }
+
+                    // If the battle started timer is still running
+                    if (WinnerForfeitTimer.IsRunning)
+                    {
+                        // Check the timer
+                        WinnerForfeit();
+
+                        // If the looser forfits
+                        if (!IsInPetBattle())
+                        {
+                            WinnerForfeitTimer.Reset();
+                        }
+                    }
+                    // Otherwise the timer has expired
+                    else
+                    {
+                        if (IsInPetBattle())
+                        {
+                            // Forfeit the match
+                            BPLlog("Forfeiting.");
+                            ForfeitCommand();
+                        }
 
                         // Make sure we create a new timer
                         ThrottleTimer.WaitTimerCreated = false;
@@ -685,13 +869,16 @@ namespace BattlePetLeveler
         {
             return new PrioritySelector(
                 new Decorator(context => string.IsNullOrEmpty(BattlePetLevelerSettings.Instance.BPLCharacterTypeComboBox),
-                    new Action(context => BPLlog("Go into bot settings and select a character type."))
+                    new Action(context => BPLlog("Go into bot settings and configure the settings accordingly."))
                 ),
                 new Decorator(context => BattlePetLevelerSettings.Instance.BPLCharacterTypeComboBox == "Winner",
                     new Action(context => WinnerPriorityTree())
                 ),
                 new Decorator(context => BattlePetLevelerSettings.Instance.BPLCharacterTypeComboBox == "Loser",
                     new Action(context => LoserPriorityTree())
+                ),
+                new Decorator(context => BattlePetLevelerSettings.Instance.BPLCharacterTypeComboBox == "Win Trade",
+                    new Action(context => WinTradePriorityTree())
                 )
             );
         }

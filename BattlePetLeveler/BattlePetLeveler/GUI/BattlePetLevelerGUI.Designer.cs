@@ -31,11 +31,13 @@
             this.SaveButton = new System.Windows.Forms.Button();
             this.CharacterTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.LevelingTypeComboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(12, 39);
+            this.SaveButton.Location = new System.Drawing.Point(12, 84);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(238, 23);
             this.SaveButton.TabIndex = 0;
@@ -50,25 +52,46 @@
             this.CharacterTypeComboBox.Items.AddRange(new object[] {
             "Winner",
             "Loser"});
-            this.CharacterTypeComboBox.Location = new System.Drawing.Point(130, 12);
+            this.CharacterTypeComboBox.Location = new System.Drawing.Point(95, 40);
             this.CharacterTypeComboBox.Name = "CharacterTypeComboBox";
-            this.CharacterTypeComboBox.Size = new System.Drawing.Size(121, 21);
+            this.CharacterTypeComboBox.Size = new System.Drawing.Size(156, 21);
             this.CharacterTypeComboBox.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 15);
+            this.label1.Location = new System.Drawing.Point(9, 43);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(113, 13);
+            this.label1.Size = new System.Drawing.Size(80, 13);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Select Character Type";
+            this.label1.Text = "Character Type";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(9, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(74, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Leveling Type";
+            // 
+            // LevelingTypeComboBox
+            // 
+            this.LevelingTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.LevelingTypeComboBox.FormattingEnabled = true;
+            this.LevelingTypeComboBox.Location = new System.Drawing.Point(95, 13);
+            this.LevelingTypeComboBox.Name = "LevelingTypeComboBox";
+            this.LevelingTypeComboBox.Size = new System.Drawing.Size(156, 21);
+            this.LevelingTypeComboBox.TabIndex = 5;
+            this.LevelingTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.LevelingTypeComboBox_SelectedIndexChanged);
             // 
             // BattlePetLevelerGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(263, 73);
+            this.ClientSize = new System.Drawing.Size(263, 119);
+            this.Controls.Add(this.LevelingTypeComboBox);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.CharacterTypeComboBox);
             this.Controls.Add(this.SaveButton);
@@ -87,5 +110,7 @@
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.ComboBox CharacterTypeComboBox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox LevelingTypeComboBox;
     }
 }
