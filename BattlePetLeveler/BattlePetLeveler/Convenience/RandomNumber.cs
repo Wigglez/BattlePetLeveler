@@ -9,10 +9,8 @@ using System;
 
 #endregion
 
-namespace BattlePetLeveler.Convenience
-{
-    public class RandomNumber
-    {
+namespace BattlePetLeveler.Convenience {
+    public class RandomNumber {
         #region Constants
         // ===========================================================
         // Constants
@@ -63,8 +61,7 @@ namespace BattlePetLeveler.Convenience
 	     * <code>Integer.MAX_VALUE - 1</code>.
 	     */
 
-        public static int generateRandomInt(int pMinVal, int pMaxVal)
-        {
+        public static int generateRandomInt(int pMinVal, int pMaxVal) {
             _mRandom = new Random();
 
             // nextInt is normally exclusive of the top value (pMaxVal), so add 1 to
@@ -75,18 +72,17 @@ namespace BattlePetLeveler.Convenience
             return randomNumber;
         }
 
-        public static float generateRandomFloat(float pMinVal, float pMaxVal)
-        {
+        public static float generateRandomFloat(float pMinVal, float pMaxVal) {
             _mRandom = new Random();
 
             // nextfloat is normally exclusive of the top value (pMaxVal), so add 1
             // to
             // make it inclusive
 
-            var rndFlt = generateRandomInt((int) (pMinVal*100),
-                (int) (pMaxVal*100));
+            var rndFlt = generateRandomInt((int)(pMinVal * 100),
+                (int)(pMaxVal * 100));
 
-            var randomNumber = rndFlt/100.0f;
+            var randomNumber = rndFlt / 100.0f;
 
             return randomNumber;
         }
