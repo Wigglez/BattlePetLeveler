@@ -71,11 +71,6 @@ namespace BattlePetLeveler {
         private static int _characterCurrentXp;
         private static int _characterLastXp;
 
-        private static readonly int MyPetXp = GetPetCurrentXp(1, 1);
-        private static readonly int EnemyPetXp = GetPetCurrentXp(2, 1);
-        private static readonly int MyPetLevel = GetPetLevel(1, 1);
-        private static readonly int EnemyPetLevel = GetPetLevel(2, 1);
-
         private Composite _root;
 
         #endregion
@@ -869,6 +864,11 @@ namespace BattlePetLeveler {
 
                 // Battle started state
                 case 3:
+                    var myPetXp = GetPetCurrentXp(1, 1);
+                    var enemyPetXp = GetPetCurrentXp(2, 1);
+                    var myPetLevel = GetPetLevel(1, 1);
+                    var enemyPetLevel = GetPetLevel(2, 1);
+
                     if(ShowPetFrame()) {
                         // Check which pet is usable and change to one that can be active
                         CheckAndChangePet();
@@ -876,15 +876,15 @@ namespace BattlePetLeveler {
 
                     // If the battle started timer is still running
                     if(WinnerForfeitTimerStopwatch.IsRunning) {
-                        if(MyPetLevel > EnemyPetLevel) {
+                        if(myPetLevel > enemyPetLevel) {
                             ForfeitCommand();
                             WinnerForfeitTimerStopwatch.Reset();
                         }
-                        if((MyPetLevel == EnemyPetLevel) && (MyPetXp > EnemyPetXp)) {
+                        if((myPetLevel == enemyPetLevel) && (myPetXp > enemyPetXp)) {
                             ForfeitCommand();
                             WinnerForfeitTimerStopwatch.Reset();
                         }
-                        if((MyPetLevel == EnemyPetLevel) && (MyPetXp == EnemyPetXp)) {
+                        if((myPetLevel == enemyPetLevel) && (myPetXp == enemyPetXp)) {
                             ForfeitCommand();
                             WinnerForfeitTimerStopwatch.Reset();
                         }
