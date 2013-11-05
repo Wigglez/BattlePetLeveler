@@ -1,7 +1,4 @@
-﻿#region Information
-/* BotBase created by AknA and Wigglez */
-
-#endregion
+﻿/* BotBase created by AknA and Wigglez */
 
 #region Namespaces
 
@@ -9,48 +6,30 @@ using System;
 
 #endregion
 
-namespace BattlePetLeveler.Convenience {
-    public class RandomNumber {
-        #region Constants
+namespace BattlePetLeveler.Helpers {
+    public class RandomNumber : BattlePetLeveler {
         // ===========================================================
         // Constants
         // ===========================================================
 
-        #endregion
-
-        #region Fields
         // ===========================================================
         // Fields
         // ===========================================================
 
         private static Random _mRandom;
 
-
-
-        #endregion
-
-        #region Constructors
         // ===========================================================
         // Constructors
         // ===========================================================
 
-        #endregion
-
-        #region Getter & Setter
         // ===========================================================
         // Getter & Setter
         // ===========================================================
 
-        #endregion
-
-        #region Methods for/from SuperClass/Interfaces
         // ===========================================================
         // Methods for/from SuperClass/Interfaces
         // ===========================================================
 
-        #endregion
-
-        #region Methods
         // ===========================================================
         // Methods
         // ===========================================================
@@ -61,7 +40,7 @@ namespace BattlePetLeveler.Convenience {
 	     * <code>Integer.MAX_VALUE - 1</code>.
 	     */
 
-        public static int generateRandomInt(int pMinVal, int pMaxVal) {
+        public static int GenerateRandomInt(int pMinVal, int pMaxVal) {
             _mRandom = new Random();
 
             // nextInt is normally exclusive of the top value (pMaxVal), so add 1 to
@@ -72,14 +51,14 @@ namespace BattlePetLeveler.Convenience {
             return randomNumber;
         }
 
-        public static float generateRandomFloat(float pMinVal, float pMaxVal) {
+        public static float GenerateRandomFloat(float pMinVal, float pMaxVal) {
             _mRandom = new Random();
 
             // nextfloat is normally exclusive of the top value (pMaxVal), so add 1
             // to
             // make it inclusive
 
-            var rndFlt = generateRandomInt((int)(pMinVal * 100),
+            var rndFlt = GenerateRandomInt((int)(pMinVal * 100),
                 (int)(pMaxVal * 100));
 
             var randomNumber = rndFlt / 100.0f;
@@ -87,15 +66,9 @@ namespace BattlePetLeveler.Convenience {
             return randomNumber;
         }
 
-
-
-        #endregion
-
-        #region Inner and Anonymous Classes
         // ===========================================================
         // Inner and Anonymous Classes
         // ===========================================================
 
-        #endregion
     }
 }

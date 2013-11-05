@@ -52,9 +52,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BattlePetLeveler.cs" />
-    <Compile Include="Character.cs" />
-    <Compile Include="Convenience\RandomNumber.cs" />
-    <Compile Include="Convenience\ThrottleTimer.cs" />
+    <Compile Include="Helpers\Character.cs" />
+    <Compile Include="Helpers\PetJournal.cs" />
+    <Compile Include="Helpers\RandomNumber.cs" />
+    <Compile Include="Helpers\ThrottleTimer.cs" />
     <Compile Include="GUI\BattlePetLevelerGUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,10 +63,10 @@
       <DependentUpon>BattlePetLevelerGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\BattlePetLevelerSettings.cs" />
-    <Compile Include="Pet.cs" />
-    <Compile Include="PetBattle.cs" />
+    <Compile Include="Helpers\PetBattles.cs" />
+    <Compile Include="Helpers\PriorityTreeState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueueHandling.cs" />
+    <Compile Include="Helpers\QueueHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
