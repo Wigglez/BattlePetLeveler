@@ -937,7 +937,7 @@ namespace BattlePetLeveler.Helpers {
         ///     http://wowpedia.org/API_C_PetBattles.SetPendingReportTargetFromUnit
         ///  </remarks>
         public static void SetPendingReportTargetFromUnit(string unit) {
-            Lua.DoString(string.Format("C_PetBattles.SetPendingReportTargetFromUnit({0})", unit));
+            Lua.DoString(string.Format("C_PetBattles.SetPendingReportTargetFromUnit('{0}')", unit));
         }
 
         /// <summary>
