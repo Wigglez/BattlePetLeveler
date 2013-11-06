@@ -137,7 +137,7 @@ namespace BattlePetLeveler.Helpers {
 
         public static void Requeue() {
             if(!TimerStopwatch.IsRunning) {
-                CreateThrottleTimer(TimerStopwatch, 3000, 5000, RequeueTimerString);
+                CreateThrottleTimer(TimerStopwatch, 10000, 13000, RequeueTimerString);
             } else {
                 CheckThrottleTimer(TimerStopwatch, ThrottleTimers[3].Time, RequeueTimerString);
             }

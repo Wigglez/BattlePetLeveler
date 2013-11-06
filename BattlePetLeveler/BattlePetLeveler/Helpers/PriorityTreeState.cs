@@ -1,6 +1,8 @@
 ﻿/* BotBase created by AknA and Wigglez */
 
 #region Namespaces
+
+using System;
 using BattlePetLeveler.GUI;
 using Styx.CommonBot;
 using Styx.WoWInternals;
@@ -178,14 +180,17 @@ namespace BattlePetLeveler.Helpers {
 
                 #region State.BATTLE_STARTED
                 case State.BATTLE_STARTED:
-                    var myPetXp = PetBattles.GetXP(1, 1);
-                    //var myPetXp = getMyPetXp[0];
+                    // Get current experience for player pet
+                    var getMyPetXp = PetBattles.GetXP(1, 1);
+                    var myPetXp = Convert.ToInt32(getMyPetXp[0]);
 
-                    var enemyPetXp = PetBattles.GetXP(2, 1);
-                    //var enemyPetXp = getEnemyPetXp[0];
+                    // Get current experience for enemy pet
+                    var getEnemyPetXp = PetBattles.GetXP(2, 1);
+                    var enemyPetXp = Convert.ToInt32(getEnemyPetXp[0]);
 
                     var myPetLevel = PetBattles.GetLevel(1, 1);
                     var enemyPetLevel = PetBattles.GetLevel(2, 1);
+
 
                     if(PetBattles.ShouldShowPetSelect()) {
                         // Check if the pet is usable

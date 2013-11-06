@@ -247,7 +247,7 @@ namespace BattlePetLeveler.Helpers {
         /// </remarks>
         public static List<string> GetAbilityState(int petOwner, int petIndex, int actionIndex) {
             return
-                Lua.GetReturnValues(string.Format("return C_PetBattles.GetAbilityState({0}, {1}, {2}))", petOwner,
+                Lua.GetReturnValues(string.Format("return C_PetBattles.GetAbilityState({0}, {1}, {2})", petOwner,
                     petIndex, actionIndex));
         }
 
@@ -343,7 +343,7 @@ namespace BattlePetLeveler.Helpers {
         ///     http://wowpedia.org/API_C_PetBattles.GetAllEffectNames
         /// </remarks>
         public static List<string> GetAllEffectNames() {
-            return Lua.GetReturnValues("local effectParamStrings = {C_PetBattles.GetAllEffectNames()}; return effectParamStrings;)");
+            return Lua.GetReturnValues("return C_PetBattles.GetAllEffectNames()");
         }
 
         /// <summary>
@@ -461,7 +461,7 @@ namespace BattlePetLeveler.Helpers {
         ///     http://wowpedia.org/API_C_PetBattles.GetAllStates
         /// </remarks>
         public static List<string> GetAllStates(int stateEnv) {
-            return Lua.GetReturnValues(string.Format("return C_PetBattles.GetAllStates({0}))", stateEnv));
+            return Lua.GetReturnValues(string.Format("return C_PetBattles.GetAllStates({0})", stateEnv));
         }
 
         /// <summary>
@@ -497,7 +497,7 @@ namespace BattlePetLeveler.Helpers {
         /// </remarks>
         public static List<string> GetAuraInfo(int petOwner, int petIndex, int auraIndex) {
             return
-                Lua.GetReturnValues(string.Format("return C_PetBattles.GetAuraInfo({0}, {1}, {2}))", petOwner, petIndex,
+                Lua.GetReturnValues(string.Format("return C_PetBattles.GetAuraInfo({0}, {1}, {2})", petOwner, petIndex,
                     auraIndex));
         }
 
@@ -632,7 +632,7 @@ namespace BattlePetLeveler.Helpers {
         ///     http://wowpedia.org/API_C_PetBattles.GetName
         /// </remarks>
         public static List<string> GetName(int petOwner, int petIndex) {
-            return Lua.GetReturnValues(string.Format("return C_PetBattles.GetName({0}, {1}))", petOwner, petIndex));
+            return Lua.GetReturnValues(string.Format("return C_PetBattles.GetName({0}, {1})", petOwner, petIndex));
         }
 
         /// <summary>
@@ -736,7 +736,7 @@ namespace BattlePetLeveler.Helpers {
         ///     http://wowpedia.org/API_C_PetBattles.GetPVPMatchmakingInfo
         /// </remarks>
         public static List<string> GetPVPMatchmakingInfo() {
-            return Lua.GetReturnValues("return C_PetBattles.GetAbilityState())");
+            return Lua.GetReturnValues("return C_PetBattles.GetAbilityState()");
         }
 
         /// <summary>
@@ -750,7 +750,7 @@ namespace BattlePetLeveler.Helpers {
         ///     http://wowpedia.org/API_C_PetBattles.GetSelectedAction
         /// </remarks>
         public static List<string> GetSelectedAction() {
-            return Lua.GetReturnValues("return C_PetBattles.GetSelectedAction())");
+            return Lua.GetReturnValues("return C_PetBattles.GetSelectedAction()");
         }
 
         /// <summary>
@@ -826,7 +826,7 @@ namespace BattlePetLeveler.Helpers {
         ///     http://wowpedia.org/API_C_PetBattles.GetXP
         /// </remarks>
         public static List<string> GetXP(int petOwner, int petIndex) {
-            return Lua.GetReturnValues(string.Format("return C_PetBattles.GetXP({0}, {1}))", petOwner, petIndex));
+            return Lua.GetReturnValues(string.Format("return C_PetBattles.GetXP({0}, {1})", petOwner, petIndex));
         }
 
         /// <summary>
