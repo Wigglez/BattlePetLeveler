@@ -999,7 +999,7 @@ namespace BattlePetLeveler.Helpers {
         /// <summary>
         ///     Uses an ability in the pet battle.
         /// </summary>
-        /// <param name="actionIndex"></param>
+        /// <param name="actionIndex">Number - Accepted values are 1-3, corresponding to the ability buttons from left to right.</param>
         /// <remarks>
         ///     http://wowpedia.org/API_C_PetBattles.UseAbility
         /// </remarks>

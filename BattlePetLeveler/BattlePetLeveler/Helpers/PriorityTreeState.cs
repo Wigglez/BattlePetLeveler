@@ -29,6 +29,8 @@ namespace BattlePetLeveler.Helpers {
 
         public static State TreeState = State.SETTINGS_INCORRECT;
 
+        public static bool UsedRandomAbility;
+
         // ===========================================================
         // Constructors
         // ===========================================================
@@ -163,8 +165,6 @@ namespace BattlePetLeveler.Helpers {
 
                                         case "Pet Leveling":
                                             // Make sure we create a new timer
-                                            ThrottleTimer.WaitTimerCreated = false;
-
                                             ThrottleTimer.CreateThrottleTimer(ThrottleTimer.TimerStopwatch, 5000, 10000,
                                                 ThrottleTimer.WinnerForfeitTimerString);
                                             break;
@@ -202,6 +202,13 @@ namespace BattlePetLeveler.Helpers {
 
                     // If the battle started timer is still running
                     if(ThrottleTimer.TimerStopwatch.IsRunning) {
+
+                        // If we haven't used a random ability
+                        if(!UsedRandomAbility) {
+                            // If we can use a random ability, use it and we're done with it
+                            PetBattleLogic.UseRandomAbility();
+                        }
+
                         switch(BattlePetLevelerSettings.Instance.BPLCharacterTypeComboBox) {
                             case "Winner":
                                 // Check the timer
@@ -287,6 +294,7 @@ namespace BattlePetLeveler.Helpers {
                     if(ThrottleTimer.TimerStopwatch.IsRunning) {
                         ThrottleTimer.Requeue();
                     } else {
+                        UsedRandomAbility = false;
                         TreeState = State.NOT_QUEUED;
                     }
                     break;

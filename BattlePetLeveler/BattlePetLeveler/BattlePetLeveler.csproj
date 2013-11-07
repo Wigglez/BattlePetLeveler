@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="BattlePetLeveler.cs" />
     <Compile Include="Helpers\Character.cs" />
+    <Compile Include="Helpers\PetBattleLogic.cs" />
     <Compile Include="Helpers\PetJournal.cs" />
     <Compile Include="Helpers\RandomNumber.cs" />
     <Compile Include="Helpers\ThrottleTimer.cs" />
